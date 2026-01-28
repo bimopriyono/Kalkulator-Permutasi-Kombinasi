@@ -78,11 +78,11 @@ with st.form("kalkulator_form"):
 
     with col2:
         st.markdown("### Nilai n")
-        n = st.number_input("n", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan n")
+        n = st.number_input("n", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan nilai n")
 
     with col3:
         st.markdown("### Nilai r")
-        r = st.number_input("r", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan r")
+        r = st.number_input("r", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan nilai r")
 
     st.write("") 
     
@@ -128,4 +128,5 @@ if submitted:
         st.write("5. Hasil:")
         st.success(f"**{nilai:,}**")
         st.latex(langkah[4])
+
 
