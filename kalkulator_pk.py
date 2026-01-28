@@ -53,7 +53,7 @@ def generate_steps_combination(n, r):
     return result, [step1, step2, step3, step4, step5]
 
 # --- UI STREAMLIT ---
-st.set_page_config(page_title="Kalkulator PK", page_icon="📊")
+st.set_page_config(page_title="Kalkulator Permutasi & Kombinasi")
 
 hide_streamlit_style = """
             <style>
@@ -120,4 +120,5 @@ if submitted:
         
         st.write("5. Hasil:")
         st.success(f"**{nilai:,}**")
+
         st.latex(langkah[4])
