@@ -3,9 +3,14 @@ import math
 
 # --- FUNGSI HELPER (LOGIKA MATEMATIKA) ---
 def get_factorial_series(n, limit=12):
+    """
+    Menghasilkan string deret angka.
+    Contoh: 5 x 4 x 3 x 2 x 1
+    """
     if n == 0 or n == 1:
         return "1"
     if n <= limit:
+        # Menggunakan " \times " agar muncul tanda silang (x) bukan titik
         return r" \times ".join([str(i) for i in range(n, 0, -1)])
     else:
         return rf"{n} \times {n-1} \times \dots \times 1"
@@ -19,10 +24,7 @@ def generate_steps_permutation(n, r):
     series_nr = get_factorial_series(n - r)
     
     step1 = r"P(n, r) = \frac{n!}{(n-r)!}"
-    
-    # Memastikan pemisah antar faktorial jelas
     step2 = rf"P({n}, {r}) = \frac{{{n}!}}{{({n}-{r})!}} = \frac{{{n}!}}{{{n-r}!}}"
-    
     step3 = rf"= \frac{{{series_n}}}{{{series_nr}}}"
     step4 = rf"= \frac{{{numerator:,}}}{{{denominator:,}}}"
     step5 = rf"= {result:,}"
@@ -41,13 +43,9 @@ def generate_steps_combination(n, r):
     series_nr = get_factorial_series(n - r)
     
     step1 = r"C(n, r) = \frac{n!}{r!(n-r)!}"
-    
     step2 = rf"C({n}, {r}) = \frac{{{n}!}}{{{r}!({n}-{r})!}} = \frac{{{n}!}}{{{r}! \times {n-r}!}}"
-    
     step3 = rf"= \frac{{{series_n}}}{{({series_r}) \times ({series_nr})}}"
-    
     step4 = rf"= \frac{{{numerator:,}}}{{{denom_r:,} \times {denom_nr:,}}}"
-    
     step5 = rf"= {result:,}"
     
     return result, [step1, step2, step3, step4, step5]
@@ -55,6 +53,7 @@ def generate_steps_combination(n, r):
 # --- UI STREAMLIT ---
 st.set_page_config(page_title="Kalkulator Permutasi & Kombinasi")
 
+# CSS: Sembunyikan instruksi 'Press Enter'
 hide_streamlit_style = """
             <style>
             div[data-testid="InputInstructions"] > span:nth-child(1) {
@@ -64,8 +63,16 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Judul Utama
+# 1. Judul Utama
 st.title("Kalkulator Permutasi & Kombinasi")
+
+# 2. Identitas Mahasiswa (Posisi Tengah)
+st.markdown("""
+    <div style='text-align: center; color: #888888; margin-bottom: 20px;'>
+        <strong>Bimo Priyono Pusoko - 50424245 - 2IA01</strong><br>
+        Mata Kuliah Statistika 1
+    </div>
+    """, unsafe_allow_html=True)
 
 # --- FORM INPUT ---
 with st.form("kalkulator_form"):
@@ -77,11 +84,13 @@ with st.form("kalkulator_form"):
 
     with col2:
         st.markdown("### Nilai n")
-        n = st.number_input("n", min_value=0, value=10, step=1, label_visibility="collapsed")
+        # PERUBAHAN: value=None agar kolom kosong saat awal dibuka
+        n = st.number_input("n", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan n")
 
     with col3:
         st.markdown("### Nilai r")
-        r = st.number_input("r", min_value=0, value=5, step=1, label_visibility="collapsed")
+        # PERUBAHAN: value=None agar kolom kosong saat awal dibuka
+        r = st.number_input("r", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan r")
 
     st.write("") 
     
@@ -92,8 +101,14 @@ with st.form("kalkulator_form"):
 if submitted:
     st.divider()
     
-    if r > n:
+    # Validasi 1: Cek apakah user sudah mengisi angka atau belum
+    if n is None or r is None:
+        st.warning("⚠️ **Mohon diisi:** Silakan masukkan angka untuk nilai **n** dan **r** terlebih dahulu.")
+    
+    # Validasi 2: Cek logika matematika (r tidak boleh lebih besar dari n)
+    elif r > n:
         st.error(f"⚠️ **Error:** Nilai **r** ({r}) tidak boleh lebih besar dari nilai **n** ({n}).")
+        
     else:
         if "Permutasi" in mode:
             st.subheader(f"Hasil Permutasi P({n}, {r})")
@@ -120,5 +135,4 @@ if submitted:
         
         st.write("5. Hasil:")
         st.success(f"**{nilai:,}**")
-
         st.latex(langkah[4])
