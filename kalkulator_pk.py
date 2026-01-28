@@ -3,14 +3,9 @@ import math
 
 # --- FUNGSI HELPER (LOGIKA MATEMATIKA) ---
 def get_factorial_series(n, limit=12):
-    """
-    Menghasilkan string deret angka.
-    Contoh: 5 x 4 x 3 x 2 x 1
-    """
     if n == 0 or n == 1:
         return "1"
     if n <= limit:
-        # Menggunakan " \times " agar muncul tanda silang (x) bukan titik
         return r" \times ".join([str(i) for i in range(n, 0, -1)])
     else:
         return rf"{n} \times {n-1} \times \dots \times 1"
@@ -53,7 +48,6 @@ def generate_steps_combination(n, r):
 # --- UI STREAMLIT ---
 st.set_page_config(page_title="Kalkulator Permutasi & Kombinasi")
 
-# CSS: Sembunyikan instruksi 'Press Enter'
 hide_streamlit_style = """
             <style>
             div[data-testid="InputInstructions"] > span:nth-child(1) {
@@ -84,12 +78,10 @@ with st.form("kalkulator_form"):
 
     with col2:
         st.markdown("### Nilai n")
-        # PERUBAHAN: value=None agar kolom kosong saat awal dibuka
         n = st.number_input("n", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan n")
 
     with col3:
         st.markdown("### Nilai r")
-        # PERUBAHAN: value=None agar kolom kosong saat awal dibuka
         r = st.number_input("r", min_value=0, value=None, step=1, label_visibility="collapsed", placeholder="Masukkan r")
 
     st.write("") 
@@ -136,3 +128,4 @@ if submitted:
         st.write("5. Hasil:")
         st.success(f"**{nilai:,}**")
         st.latex(langkah[4])
+
